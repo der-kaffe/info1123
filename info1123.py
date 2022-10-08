@@ -142,53 +142,79 @@ def container():
         p /= 1000
         # Lo dividimos en el T. del container grande
         p /= peso
-        print(p, x, y, i)
         # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
         fp = p-int(p)
         Peso_pequenho = (fp*peso)/100
+        print(Peso_pequenho)
         p = int(p)
         # Eso significa que tenemos 28 containers grandes normales
         if i == 0:
             for e in range(p-1):
                 C = Contenedor_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Contenedor_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Contenedor_P(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 1 or i == 2:
             for e in range(p-1):
                 C = Estanque_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Estanque_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 3:
             for e in range(p-1):
                 C = Contenedor_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Contenedor_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 4 or i == 5:
             for e in range(p-1):
                 C = Estanque_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Estanque_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 6:
             for e in range(p-1):
                 C = Contenedor_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Contenedor_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 7 or i == 8:
             for e in range(p-1):
                 C = Estanque_G(x, y, peso)
                 a.append(C)
-            for e in range(1):
-                C = Estanque_P(x, y, Peso_pequenho)
+            if Peso_pequenho < 11000:
+                for e in range(1):
+                    C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
     print(len(refrigerado), "<R")
     print(len(normal), "<N")
