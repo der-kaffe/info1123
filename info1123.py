@@ -13,6 +13,12 @@ class Contenedores:
     def kilos(self):
         return self.kilos
 
+    def tipo_carga(self):
+        return self.tipo_carga
+
+    def masa(self):
+        return self.masa
+
 
 @dataclass
 class Vehiculos:
@@ -78,6 +84,8 @@ class Refrigerado_G(Contenedores):
 lista = []
 # Listas que contienen containers
 normal = []
+refrigerado = []
+inflamable = []
 
 
 def leer():
@@ -90,45 +98,101 @@ def leer():
 
 
 def container():
-    p = 0
-    for i in range(len(lista)):
-        if lista[i][2] == "normal" and lista[i][3] == "solida":
-            p += int(lista[i][4])
-    p /= 1000
-    # Sobra un cantidad (0.algo) pero en el .ods siempre lo desprecia, se hará igual
-    p = int(p)
-    # Lo dividimos en el T. del container grande
-    p /= 24000
-    # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
-    fp = p-int(p)
-    Peso_pequenho = (fp*24000)/100
-    p = int(p)
-    # Eso significa que tenemos 28 containers grandes normales
-
-    for i in range(p-1):
-        x = Contenedor_G("Normal", "Solida", 24000)
-        normal.append(x)
-    for i in range(1):
-        x = Contenedor_P("Normal", "Solida", Peso_pequenho)
-        normal.append(x)
-    # p = 0
-    # for i in range(len(lista)):
-    #     if lista[i][2] == "normal" and lista[i][3] == "liquida":
-    #         p += int(lista[i][4])
-    # p /= 1000
-    # #Sobra un cantidad (0.algo) pero en el .ods siempre lo desprecia, se hará igual
-    # p = int(p)
-    # p /= 24000
-    # # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
-    # fp = p-int(p)
-    # Peso_pequenho = (fp*24000)/100
-    # p = int(p)
-    # for i in range(p):
-    #     x = Contenedor_G("Normal", "Liquida", 24000)
-    #     normal.append(x)
-    # for i in range(1):
-    #     x = Contenedor_P("Normal", "Liquida", Peso_pequenho)
-    #     normal.append(x)
+    x = ""
+    y = ""
+    for i in range(9):
+        if i == 0:
+            x = "normal"
+            y = "solida"
+            a = normal
+            peso = 24000
+        if i == 1:
+            x = "normal"
+            y = "liquida"
+        if i == 2:
+            x = "normal"
+            y = "gas"
+        if i == 3:
+            x = "refrigerado"
+            y = "solida"
+            a = refrigerado
+            peso = 20000
+        if i == 4:
+            x = "refrigerado"
+            y = "liquida"
+        if i == 5:
+            x = "refrigerado"
+            y = "gas"
+        if i == 6:
+            x = "inflamable"
+            y = "solida"
+            a = inflamable
+            peso = 22000
+        if i == 7:
+            x = "inflamable"
+            y = "liquida"
+        if i == 8:
+            x = "inflamable"
+            y = "gas"
+        p = 0
+        for h in range(len(lista)):
+            if lista[h][2] == x and lista[h][3] == y:
+                p += int(lista[h][4])
+        # Lo pasamos a tonelada
+        p /= 1000
+        # Lo dividimos en el T. del container grande
+        p /= peso
+        print(p, x, y, i)
+        # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
+        fp = p-int(p)
+        Peso_pequenho = (fp*peso)/100
+        p = int(p)
+        # Eso significa que tenemos 28 containers grandes normales
+        if i == 0:
+            for e in range(p-1):
+                C = Contenedor_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+        elif i == 1 or i == 2:
+            for e in range(p-1):
+                C = Estanque_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+        elif i == 3:
+            for e in range(p-1):
+                C = Contenedor_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+        elif i == 4 or i == 5:
+            for e in range(p-1):
+                C = Estanque_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+        elif i == 6:
+            for e in range(p-1):
+                C = Contenedor_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+        elif i == 7 or i == 8:
+            for e in range(p-1):
+                C = Estanque_G(x, y, peso)
+                a.append(C)
+            for e in range(1):
+                C = Estanque_P(x, y, Peso_pequenho)
+                a.append(C)
+    print(len(refrigerado), "<R")
+    print(len(normal), "<N")
+    print(len(inflamable), "<I")
 
 
 leer()
