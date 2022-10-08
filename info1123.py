@@ -60,25 +60,50 @@ class Contenedor_P(Contenedores):
 class Contenedor_G(Contenedores):
     tamaño: str = "grande"
 
+    def __init__(self, tipo_carga, masa, kilos):
+        self.tipo_carga = tipo_carga
+        self.masa = masa
+        self.kilos = kilos
+
 
 @dataclass
 class Estanque_P(Contenedores):
     tamaño: str = "pequeño"
+
+    def __init__(self, tipo_carga, masa, kilos):
+        self.tipo_carga = tipo_carga
+        self.masa = masa
+        self.kilos = kilos
 
 
 @dataclass
 class Estanque_G(Contenedores):
     tamaño: str = "grande"
 
+    def __init__(self, tipo_carga, masa, kilos):
+        self.tipo_carga = tipo_carga
+        self.masa = masa
+        self.kilos = kilos
+
 
 @dataclass
 class Refrigerado_P(Contenedores):
     tamaño: str = "pequeño"
 
+    def __init__(self, tipo_carga, masa, kilos):
+        self.tipo_carga = tipo_carga
+        self.masa = masa
+        self.kilos = kilos
+
 
 @dataclass
 class Refrigerado_G(Contenedores):
     tamaño: str = "grande"
+
+    def __init__(self, tipo_carga, masa, kilos):
+        self.tipo_carga = tipo_carga
+        self.masa = masa
+        self.kilos = kilos
 
 
 lista = []
@@ -86,6 +111,7 @@ lista = []
 normal = []
 refrigerado = []
 inflamable = []
+C_all = []
 
 
 def leer():
@@ -145,7 +171,6 @@ def container():
         # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
         fp = p-int(p)
         Peso_pequenho = (fp*peso)/100
-        print(Peso_pequenho)
         p = int(p)
         # Eso significa que tenemos 28 containers grandes normales
         if i == 0:
@@ -155,6 +180,10 @@ def container():
             if Peso_pequenho < 11000:
                 for e in range(1):
                     C = Contenedor_P(x, y, Peso_pequenho)
+                a.append(C)
+            else:
+                for e in range(1):
+                    C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
         elif i == 1 or i == 2:
             for e in range(p-1):
@@ -216,10 +245,13 @@ def container():
                 for e in range(1):
                     C = Estanque_G(x, y, Peso_pequenho)
                 a.append(C)
-    print(len(refrigerado), "<R")
-    print(len(normal), "<N")
-    print(len(inflamable), "<I")
+
+
+def transporte():
+    C_all = refrigerado+normal+inflamable
+    TC = len(C_all)
 
 
 leer()
 container()
+transporte()
