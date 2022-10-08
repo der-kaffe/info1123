@@ -90,31 +90,45 @@ def leer():
 
 
 def container():
-    h = 0
+    p = 0
     for i in range(len(lista)):
         if lista[i][2] == "normal" and lista[i][3] == "solida":
-            print(lista[i][4])
-            h += int(lista[i][4])
-    h /= 1000
-    # Sobra un 0.365 que en el .ods se desprecia, se hará igual
-    h = int(h)
+            p += int(lista[i][4])
+    p /= 1000
+    # Sobra un cantidad (0.algo) pero en el .ods siempre lo desprecia, se hará igual
+    p = int(p)
     # Lo dividimos en el T. del container grande
-    h /= 24000
-    # Lo restante (0.algo), que siempre será menor a 1, entonces es fh<24000 que es un Con.G
-    fh = h-int(h)
-    Peso_pequenho = (fh*24000)/100
-    # print(h) Sobra un 0.003 que son 830 gramos, ni siquiera un kilo si que lo despreciamos
-    h = int(h)
+    p /= 24000
+    # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
+    fp = p-int(p)
+    Peso_pequenho = (fp*24000)/100
+    p = int(p)
     # Eso significa que tenemos 28 containers grandes normales
-    for i in range(h):
+
+    for i in range(p-1):
         x = Contenedor_G("Normal", "Solida", 24000)
         normal.append(x)
     for i in range(1):
-        x = Contenedor_P("Normal", "Liquida", Peso_pequenho)
+        x = Contenedor_P("Normal", "Solida", Peso_pequenho)
         normal.append(x)
+    # p = 0
     # for i in range(len(lista)):
     #     if lista[i][2] == "normal" and lista[i][3] == "liquida":
-    #         print(lista[i][4])
+    #         p += int(lista[i][4])
+    # p /= 1000
+    # #Sobra un cantidad (0.algo) pero en el .ods siempre lo desprecia, se hará igual
+    # p = int(p)
+    # p /= 24000
+    # # Lo restante (0.algo), que siempre será menor a 1, entonces es fp<24000 que es un Con.G
+    # fp = p-int(p)
+    # Peso_pequenho = (fp*24000)/100
+    # p = int(p)
+    # for i in range(p):
+    #     x = Contenedor_G("Normal", "Liquida", 24000)
+    #     normal.append(x)
+    # for i in range(1):
+    #     x = Contenedor_P("Normal", "Liquida", Peso_pequenho)
+    #     normal.append(x)
 
 
 leer()
