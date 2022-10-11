@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import csv
 from tkinter import *
 from tkinter import messagebox
-
+import tkinter as tk
 from PIL import ImageTk
 # Creamos clase padre
 
@@ -33,7 +33,6 @@ class Contenedores:
 class Vehiculos:
     Costo = int
     Capacidad = int
-    # tipoC: str
 
 
 @dataclass
@@ -45,6 +44,10 @@ class Barco(Vehiculos):
         self.Contenido = Contenido
         Barco.Capacidad += 1
 
+    def todo(self):
+        todo = f"costo: {Barco.Costo}", self.Contenido
+        return todo
+
 
 @dataclass
 class Tren(Vehiculos):
@@ -54,10 +57,10 @@ class Tren(Vehiculos):
     def __init__(self, Contenido):
         self.Contenido = Contenido
         Tren.Capacidad += 1
-    # def __init__(self, tipo):
-    # self.tipoC = tipoC
-    # self.topoP = tipoP
-    # self.peso = peso
+
+    def todo(self):
+        todo = f"costo: {Tren.Costo}", self.Contenido
+        return todo
 
 
 @dataclass
@@ -82,8 +85,10 @@ class Camion(Vehiculos):
     def __init__(self, Contenido):
         self.Contenido = Contenido
         Camion.Capacidad += 1
-    # self.topoP = tipoP
-    # self.peso = peso
+
+    def todo(self):
+        todo = f"costo: {Camion.Costo}", self.Contenido
+        return todo
 
 
 @dataclass
@@ -315,6 +320,7 @@ camiones = []
 
 def transporte():
     total = (normal_solida) + (estanque_liquida) + (estanque_gas)
+    print()
 
     prueba = []
 
@@ -382,13 +388,69 @@ def transporte():
 def which_button(button_press):
     print(button_press)
     messagebox.showinfo(
-        message=Avion.todo(aviones[button_press]), title=f"Avion numero: {button_press}")
+        message=Barco.todo(barcos[button_press]), title=f"Barco numero: {button_press}")
 
 
 def which_button2(button_press):
+    contenedor = 0
+    estanque = 0
+    peso = 0
+    Peso_Normal = 0
+    Peso_Refrigerada = 0
+    Peso_Inflamable = 0
+    print(button_press)
+    ventana = Tk()
+    Scrollbar = tk.Scrollbar(ventana)
+    c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
+    Scrollbar.config(command=c.yview)
+    Scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    frame = tk.Frame(c)
+    c.pack(side="left", fill="both", expand=True)
+    c.create_window(0, 0, window=frame, anchor='nw')
+
+    for i in range(len(trenes[button_press].Contenido)):
+        if trenes[button_press].Contenido[i].tipo_carga == "normal":
+            Peso_Normal += trenes[button_press].Contenido[i].kilos
+        if trenes[button_press].Contenido[i].tipo_carga == "refrigerado":
+            Peso_Refrigerada += trenes[button_press].Contenido[i].kilos
+        if trenes[button_press].Contenido[i].tipo_carga == "inflamable":
+            Peso_Inflamable += trenes[button_press].Contenido[i].kilos
+        if type(trenes[button_press].Contenido[i]) == (Contenedor_G):
+            contenedor += 1
+            peso += trenes[button_press].Contenido[i].kilos
+        elif type(trenes[button_press].Contenido[i]) == (Contenedor_P):
+            contenedor += 1
+            peso += trenes[button_press].Contenido[i].kilos
+        else:
+            estanque += 1
+            peso += trenes[button_press].Contenido[i].kilos
+    texto = tk.Label(
+        frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\n\n{Tren.todo(trenes[button_press])}", wraplength=1100, background='white')
+    texto.grid(column=0, row=0)
+    ventana.update()
+    c.config(scrollregion=c.bbox("all"))
+
+
+def which_button3(button_press):
+    contenedor = 0
+    estanque = 0
     print(button_press)
     messagebox.showinfo(
-        message=Avion.todo(barcos[button_press]), title=f"Avion numero: {button_press}")
+        message=Avion.todo(aviones[button_press]), title=f"Avion numero: {button_press}")
+    for i in range(len(aviones[button_press].Contenido)):
+        if aviones[button_press].Contenido[i] == type(Contenedor_G):
+            contenedor += 1
+        elif aviones[button_press].Contenido[i] == type(Contenedor_P):
+            contendor += 1
+        else:
+            estanque += 1
+    print(contenedor, "C", estanque, "E")
+
+
+def which_button4(button_press):
+    print(button_press)
+    messagebox.showinfo(
+        message=Camion.todo(camiones[button_press]), title=f"Camion numero: {button_press}")
 
 
 def BarcosV():
@@ -404,13 +466,36 @@ def BarcosV():
     for x in range(len(barcos)):
         r += 1
         btn = Button(
-            vp, text=f"{x}", command=lambda m=x: which_button2(m))
+            vp, text=f"{x}", command=lambda m=x: which_button(m))
         btn.grid(column=c, row=r)
         if r == 18:
             c += 1
             r = 0
     if len(barcos) == 0:
         n = Label(ventana2, text="No hay barcos")
+        n.grid(column=1, row=2)
+
+
+def trenesV():
+    ventana2 = Toplevel(ventana)
+    ventana2.title("Trenes")
+    ventana2.geometry("500x500")
+    vp = Frame(ventana2)
+    vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
+    r = 0
+    c = 0
+    # img = ImageTk.PhotoImage(file='avion.png')
+    # PhotoImage(master=ventana2, width=10, height=10)
+    for x in range(len(trenes)):
+        r += 1
+        btn = Button(
+            vp, text=f"{x}", command=lambda m=x: which_button2(m))
+        btn.grid(column=c, row=r)
+        if r == 18:
+            c += 1
+            r = 0
+    if len(trenes) == 0:
+        n = Label(ventana2, text="No hay trenes")
         n.grid(column=1, row=2)
 
 
@@ -427,13 +512,41 @@ def avionesV():
     for x in range(len(aviones)):
         r += 1
         btn = Button(
-            vp, text=f"{x}", command=lambda m=x: which_button(m))
+            vp, text=f"{x}", command=lambda m=x: which_button3(m))
         btn.grid(column=c, row=r)
         if r == 18:
             c += 1
             r = 0
     if len(aviones) == 0:
         n = Label(ventana2, text="No hay aviones")
+        n.grid(column=1, row=2)
+
+# print(aviones[0].Contenido[0])  # EJEMPLO
+# print(aviones[0].Contenido[0].tipo_carga)  # ejemplo
+
+
+def CamionesV():
+    ventana2 = Toplevel(ventana)
+    ventana2.title("Camiones")
+    ventana2.geometry("500x500")
+    vp = Frame(ventana2)
+    vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
+    r = 0
+    c = 0
+    # img = ImageTk.PhotoImage(file='avion.png')
+    # PhotoImage(master=ventana2, width=10, height=10)
+
+    for x in range(len(camiones)):
+        r += 1
+        btn = Button(
+            vp, text=f"{x}", command=lambda m=x: which_button4(m))
+        btn.grid(column=c, row=r)
+        if r == 18:
+            c += 1
+            r = 0
+
+    if len(camiones) == 0:
+        n = Label(ventana2, text="No hay Camion")
         n.grid(column=1, row=2)
 
 
@@ -455,15 +568,17 @@ vp.rowconfigure(0, weight=1)
 
 totalvehiculos = Label(vp, text=f"Cantidad total de vehiculos: {total}")
 totalvehiculos.grid(column=1, row=1)
+
 btn = Button(vp, text="Barcos", command=BarcosV)
 btn.grid(column=1, row=2)
 
-btn2 = Button(vp, text="aviones", command=avionesV)
+btn2 = Button(vp, text="Trenes", command=trenesV)
 btn2.grid(column=1, row=3)
 
+btn3 = Button(vp, text="Avion", command=avionesV)
+btn3.grid(column=1, row=4)
+
+btn3 = Button(vp, text="Camiones", command=CamionesV)
+btn3.grid(column=1, row=5)
 
 ventana.mainloop()
-
-
-# print(aviones[0].Contenido[0])  # EJEMPLO
-# print(aviones[0].Contenido[0].tipo_carga)  # ejemplo
