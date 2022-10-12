@@ -382,13 +382,54 @@ def transporte():
     print(len(trenes), "Tren")
     print(len(aviones), "Avion")
     print(len(camiones), "Camion")
-    print(len(prueba), "prueba")
 
 
 def which_button(button_press):
-    print(button_press)
-    messagebox.showinfo(
-        message=Barco.todo(barcos[button_press]), title=f"Barco numero: {button_press}")
+    contenedor = 0
+    estanque = 0
+    peso = 0
+    Peso_Normal = 0
+    Peso_Refrigerada = 0
+    Peso_Inflamable = 0
+    gas = 0
+    liquida = 0
+    solida = 0
+    ventana = Tk()
+    Scrollbar = tk.Scrollbar(ventana)
+    c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
+    Scrollbar.config(command=c.yview)
+    Scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    frame = tk.Frame(c)
+    c.pack(side="left", fill="both", expand=True)
+    c.create_window(0, 0, window=frame, anchor='nw')
+    for i in range(len(barcos[button_press].Contenido)):
+        if barcos[button_press].Contenido[i].masa == "solida":
+            solida += barcos[button_press].Contenido[i].kilos
+        if barcos[button_press].Contenido[i].masa == "liquida":
+            liquida += barcos[button_press].Contenido[i].kilos
+        if barcos[button_press].Contenido[i].masa == "gas":
+            gas += barcos[button_press].Contenido[i].kilos
+        if barcos[button_press].Contenido[i].tipo_carga == "normal":
+            Peso_Normal += barcos[button_press].Contenido[i].kilos
+        if barcos[button_press].Contenido[i].tipo_carga == "refrigerado":
+            Peso_Refrigerada += barcos[button_press].Contenido[i].kilos
+        if barcos[button_press].Contenido[i].tipo_carga == "inflamable":
+            Peso_Inflamable += barcos[button_press].Contenido[i].kilos
+        if type(barcos[button_press].Contenido[i]) == (Contenedor_G):
+            contenedor += 1
+            peso += barcos[button_press].Contenido[i].kilos
+        elif type(barcos[button_press].Contenido[i]) == (Contenedor_P):
+            contenedor += 1
+            peso += barcos[button_press].Contenido[i].kilos
+        else:
+            estanque += 1
+            peso += barcos[button_press].Contenido[i].kilos
+    texto = tk.Label(
+        frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}\n\n{Barco.todo(barcos[button_press])}", wraplength=1100, background='white')
+
+    texto.grid(column=0, row=0)
+    ventana.update()
+    c.config(scrollregion=c.bbox("all"))
 
 
 def which_button2(button_press):
@@ -398,7 +439,9 @@ def which_button2(button_press):
     Peso_Normal = 0
     Peso_Refrigerada = 0
     Peso_Inflamable = 0
-    print(button_press)
+    gas = 0
+    solida = 0
+    liquida = 0
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
@@ -409,6 +452,12 @@ def which_button2(button_press):
     c.create_window(0, 0, window=frame, anchor='nw')
 
     for i in range(len(trenes[button_press].Contenido)):
+        if trenes[button_press].Contenido[i].masa == "solida":
+            solida += trenes[button_press].Contenido[i].kilos
+        if trenes[button_press].Contenido[i].masa == "liquida":
+            liquida += trenes[button_press].Contenido[i].kilos
+        if trenes[button_press].Contenido[i].masa == "gas":
+            gas += trenes[button_press].Contenido[i].kilos
         if trenes[button_press].Contenido[i].tipo_carga == "normal":
             Peso_Normal += trenes[button_press].Contenido[i].kilos
         if trenes[button_press].Contenido[i].tipo_carga == "refrigerado":
@@ -425,7 +474,7 @@ def which_button2(button_press):
             estanque += 1
             peso += trenes[button_press].Contenido[i].kilos
     texto = tk.Label(
-        frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\n\n{Tren.todo(trenes[button_press])}", wraplength=1100, background='white')
+        frame, text=f"Tren numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}\n\n{Tren.todo(trenes[button_press])}", wraplength=1100, background='white')
     texto.grid(column=0, row=0)
     ventana.update()
     c.config(scrollregion=c.bbox("all"))
@@ -434,23 +483,99 @@ def which_button2(button_press):
 def which_button3(button_press):
     contenedor = 0
     estanque = 0
+    peso = 0
+    Peso_Normal = 0
+    Peso_Refrigerada = 0
+    Peso_Inflamable = 0
+    solida = 0
+    liquida = 0
+    gas = 0
     print(button_press)
-    messagebox.showinfo(
-        message=Avion.todo(aviones[button_press]), title=f"Avion numero: {button_press}")
+    ventana = Tk()
+    Scrollbar = tk.Scrollbar(ventana)
+    c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
+    Scrollbar.config(command=c.yview)
+    Scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    frame = tk.Frame(c)
+    c.pack(side="left", fill="both", expand=True)
+    c.create_window(0, 0, window=frame, anchor='nw')
+
     for i in range(len(aviones[button_press].Contenido)):
-        if aviones[button_press].Contenido[i] == type(Contenedor_G):
+        if aviones[button_press].Contenido[i].masa == "solida":
+            solida += aviones[button_press].Contenido[i].kilos
+        if aviones[button_press].Contenido[i].masa == "liquida":
+            liquida += aviones[button_press].Contenido[i].kilos
+        if aviones[button_press].Contenido[i].masa == "gas":
+            gas += aviones[button_press].Contenido[i].kilos
+        if aviones[button_press].Contenido[i].tipo_carga == "normal":
+            Peso_Normal += aviones[button_press].Contenido[i].kilos
+        if aviones[button_press].Contenido[i].tipo_carga == "refrigerado":
+            Peso_Refrigerada += aviones[button_press].Contenido[i].kilos
+        if aviones[button_press].Contenido[i].tipo_carga == "inflamable":
+            Peso_Inflamable += aviones[button_press].Contenido[i].kilos
+        if type(aviones[button_press].Contenido[i]) == (Contenedor_G):
             contenedor += 1
-        elif aviones[button_press].Contenido[i] == type(Contenedor_P):
-            contendor += 1
+            peso += aviones[button_press].Contenido[i].kilos
+        elif type(aviones[button_press].Contenido[i]) == (Contenedor_P):
+            contenedor += 1
+            peso += aviones[button_press].Contenido[i].kilos
         else:
             estanque += 1
-    print(contenedor, "C", estanque, "E")
+            peso += aviones[button_press].Contenido[i].kilos
+    texto = tk.Label(
+        frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}\n\n{Avion.todo(aviones[button_press])}", wraplength=1100, background='white')
+    texto.grid(column=0, row=0)
+    ventana.update()
+    c.config(scrollregion=c.bbox("all"))
 
 
 def which_button4(button_press):
+    contenedor = 0
+    estanque = 0
+    peso = 0
+    Peso_Normal = 0
+    Peso_Refrigerada = 0
+    Peso_Inflamable = 0
+    solida = 0
+    liquida = 0
+    gas = 0
     print(button_press)
-    messagebox.showinfo(
-        message=Camion.todo(camiones[button_press]), title=f"Camion numero: {button_press}")
+    ventana = Tk()
+    Scrollbar = tk.Scrollbar(ventana)
+    c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
+    Scrollbar.config(command=c.yview)
+    Scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    frame = tk.Frame(c)
+    c.pack(side="left", fill="both", expand=True)
+    c.create_window(0, 0, window=frame, anchor='nw')
+
+    for i in range(len(camiones[button_press].Contenido)):
+        if camiones[button_press].Contenido[i].masa == "solida":
+            solida += camiones[button_press].Contenido[i].kilos
+        if camiones[button_press].Contenido[i].masa == "liquida":
+            liquida += camiones[button_press].Contenido[i].kilos
+        if camiones[button_press].Contenido[i].masa == "gas":
+            gas += camiones[button_press].Contenido[i].kilos
+        if camiones[button_press].Contenido[i].tipo_carga == "normal":
+            Peso_Normal += camiones[button_press].Contenido[i].kilos
+        if camiones[button_press].Contenido[i].tipo_carga == "refrigerado":
+            Peso_Refrigerada += camiones[button_press].Contenido[i].kilos
+        if camiones[button_press].Contenido[i].tipo_carga == "inflamable":
+            Peso_Inflamable += camiones[button_press].Contenido[i].kilos
+        if type(camiones[button_press].Contenido[i]) == (Contenedor_G):
+            contenedor += 1
+            peso += camiones[button_press].Contenido[i].kilos
+        elif type(camiones[button_press].Contenido[i]) == (Contenedor_P):
+            contenedor += 1
+            peso += camiones[button_press].Contenido[i].kilos
+        else:
+            estanque += 1
+            peso += camiones[button_press].Contenido[i].kilos
+    texto = tk.Label(
+        frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}\n\n{Camion.todo(camiones[button_press])}", wraplength=1100, background='white')
+    texto.grid(column=0, row=0)
+    ventana.update()
+    c.config(scrollregion=c.bbox("all"))
 
 
 def BarcosV():
@@ -468,7 +593,7 @@ def BarcosV():
         btn = Button(
             vp, text=f"{x}", command=lambda m=x: which_button(m))
         btn.grid(column=c, row=r)
-        if r == 18:
+        if r == 28:
             c += 1
             r = 0
     if len(barcos) == 0:
@@ -491,7 +616,7 @@ def trenesV():
         btn = Button(
             vp, text=f"{x}", command=lambda m=x: which_button2(m))
         btn.grid(column=c, row=r)
-        if r == 18:
+        if r == 28:
             c += 1
             r = 0
     if len(trenes) == 0:
@@ -514,15 +639,12 @@ def avionesV():
         btn = Button(
             vp, text=f"{x}", command=lambda m=x: which_button3(m))
         btn.grid(column=c, row=r)
-        if r == 18:
+        if r == 28:
             c += 1
             r = 0
     if len(aviones) == 0:
         n = Label(ventana2, text="No hay aviones")
         n.grid(column=1, row=2)
-
-# print(aviones[0].Contenido[0])  # EJEMPLO
-# print(aviones[0].Contenido[0].tipo_carga)  # ejemplo
 
 
 def CamionesV():
@@ -533,15 +655,14 @@ def CamionesV():
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     r = 0
     c = 0
-    # img = ImageTk.PhotoImage(file='avion.png')
-    # PhotoImage(master=ventana2, width=10, height=10)
 
+    # PhotoImage(master=ventana2, width=10, height=10)
     for x in range(len(camiones)):
         r += 1
         btn = Button(
-            vp, text=f"{x}", command=lambda m=x: which_button4(m))
+            vp, command=lambda m=x: which_button4(m), text=f"{x}")
         btn.grid(column=c, row=r)
-        if r == 18:
+        if r == 28:
             c += 1
             r = 0
 
@@ -565,20 +686,75 @@ vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
 vp.columnconfigure(0, weight=1)
 vp.rowconfigure(0, weight=1)
 
+img = tk.PhotoImage(file="barco.png")
 
 totalvehiculos = Label(vp, text=f"Cantidad total de vehiculos: {total}")
 totalvehiculos.grid(column=1, row=1)
 
+img = tk.PhotoImage(file="barco.png")
+totalvehiculos3 = Label(
+    vp, text=f"\t\tCantidad: {len(barcos) }")
+totalvehiculos3.grid(column=1, row=2)
+
+totalvehiculos3 = Label(
+    vp, image=img).grid(column=1, row=2)
+
+img2 = tk.PhotoImage(file="tren.png")
+totalvehiculos3 = Label(
+    vp, text=f"\t\tCantidad: {len(trenes) }")
+totalvehiculos3.grid(column=1, row=3)
+
+totalvehiculos3 = Label(
+    vp, image=img2).grid(column=1, row=3)
+
+img3 = tk.PhotoImage(file="avion.png")
+totalvehiculos3 = Label(
+    vp, text=f"\t\tCantidad: {len(aviones) }")
+totalvehiculos3.grid(column=1, row=4)
+
+totalvehiculos3 = Label(
+    vp, image=img3).grid(column=1, row=4)
+
+img4 = tk.PhotoImage(file="camion.png")
+totalvehiculos3 = Label(
+    vp, text=f"\t\tCantidad: {len(camiones) }")
+totalvehiculos3.grid(column=1, row=5)
+
+totalvehiculos3 = Label(
+    vp, image=img4).grid(column=1, row=5)
+
+totalvehiculos1 = Label(
+    vp, text=f"Precio total de vehiculos: {len(barcos)*1000000000 + len(trenes)*10000000+len(aviones)*1000000+len(camiones)*500000}")
+totalvehiculos1.grid(column=1, row=7)
+
+
+totalvehiculos1 = Label(
+    vp, text=f"Precio de los barcos{len(barcos)*1000000000}")
+totalvehiculos1.grid(column=1, row=8)
+
+totalvehiculos2 = Label(
+    vp, text=f"Precio de los trenes: {len(trenes)*10000000}")
+totalvehiculos2.grid(column=1, row=9)
+
+
+totalvehiculos3 = Label(
+    vp, text=f"Precio de los aviones: {len(aviones)*1000000 }")
+totalvehiculos3.grid(column=1, row=10)
+
+totalvehiculos4 = Label(
+    vp, text=f"Precio de los camiones: {len(camiones)*500000 }")
+totalvehiculos4.grid(column=1, row=11)
+
+
 btn = Button(vp, text="Barcos", command=BarcosV)
-btn.grid(column=1, row=2)
+btn.grid(column=1, row=12)
 
 btn2 = Button(vp, text="Trenes", command=trenesV)
-btn2.grid(column=1, row=3)
-
+btn2.grid(column=1, row=13)
 btn3 = Button(vp, text="Avion", command=avionesV)
-btn3.grid(column=1, row=4)
+btn3.grid(column=1, row=14)
 
-btn3 = Button(vp, text="Camiones", command=CamionesV)
-btn3.grid(column=1, row=5)
+btn4 = Button(vp, text="Camiones", command=CamionesV)
+btn4.grid(column=1, row=15)
 
 ventana.mainloop()
