@@ -26,13 +26,14 @@ class Contenedores:
     def masa(self):
         return self.masa
 
-# ==========================================
-
 
 @dataclass
 class Vehiculos:
     Costo = int
     Capacidad = int
+
+# ==========================================
+# Creamos clases hijas
 
 
 @dataclass
@@ -92,7 +93,6 @@ class Camion(Vehiculos):
 
 
 @dataclass
-# La clase hija se crea así, nombre_clase_hija(clase_padre)
 class Contenedor_P(Contenedores):
     tamaño: str = "pequeño"
     contadorCP = 0
@@ -181,6 +181,8 @@ def container():
     x = ""
     y = ""
     for i in range(9):
+        # Daremos 9 vueltas en donde a sera una lista diferente dependiendo de la masa
+        # Y x,y seran el tipo de carga, masa, respectivamente
         if i == 0:
             x = "normal"
             y = "solida"
@@ -220,6 +222,7 @@ def container():
             x = "inflamable"
             y = "gas"
             a = estanque_gas
+        # p es el peso total dependiendo de el tipo de carga y la masa
         p = 0
         for h in range(len(lista)):
             if lista[h][2] == x and lista[h][3] == y:
@@ -232,7 +235,7 @@ def container():
         fp = p-int(p)
         Peso_pequenho = (fp*peso)/100
         p = int(p)
-        # Eso significa que tenemos 28 containers grandes normales
+        # Creamos los objetos containers y lo ponemos en su lista correspondiente
         if i == 0:
             for e in range(p-1):
                 C = Contenedor_G(x, y, peso)
@@ -312,32 +315,31 @@ barcos = []
 trenes = []
 aviones = []
 camiones = []
-#Contenedor_G =  83
-#Contenedor_P =   3
-#EstanqueG    = 139
-#EstanqueP    =   6
 
 
 def transporte():
+    # Creamos una lista con  todos los containers en orden
     total = (normal_solida) + (estanque_liquida) + (estanque_gas)
-    print()
-
     prueba = []
-
-    print(len(total), "total")
+    # Iteramos toda la lista total y lo añadimos a la lista prueba, si resulta que hay un total de X elementos correspondiente
+    # A la cantidad maxima posible de containers que permite el vehiculo creamos un objeto que contenga la lista de containers
     for i in range(len(total)):
         prueba.append(total[i])
         if len(prueba) == 24000:
             T = Barco(prueba)
             barcos.append(T)
+            # Se vacía la lista para que repetir el ciclo correctamente
             prueba = []
+            # Lo mismo con Capacidad
             Barco.Capacidad = 0
+    # Como el if anterior no se cumplió seguramente la lista prueba quedará con items adentro que tienen que ser vaciados
     prueba = []
-
+    # La lista TOTAL sigue siendo la misma apesar de que subimos los containers al vehiculo
+    # Si que simplemente los eliminamos
     if len(barcos) >= 1:
         for i in range(len(barcos)*24000):
             total.pop(0)
-
+    # Repetimos para los demás vehiculos
     for i in range(len(total)):
         if Tren.Capacidad < 250:
             prueba.append(total[i])
@@ -378,13 +380,11 @@ def transporte():
         for i in range(len(camiones)):
             total.pop(0)
 
-    print(len(barcos), "Barco")
-    print(len(trenes), "Tren")
-    print(len(aviones), "Avion")
-    print(len(camiones), "Camion")
+# Identifica que boton se presiono
 
 
 def which_button(button_press):
+    # Contadores
     contenedor = 0
     estanque = 0
     peso = 0
@@ -394,6 +394,8 @@ def which_button(button_press):
     gas = 0
     liquida = 0
     solida = 0
+    # Abriremos una nueva ventana
+    # Que permitira tendra un scroll hacia abajo
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
@@ -402,6 +404,8 @@ def which_button(button_press):
     frame = tk.Frame(c)
     c.pack(side="left", fill="both", expand=True)
     c.create_window(0, 0, window=frame, anchor='nw')
+    # Recorremos la lista de containers que tiene el barco que se presiono
+    # Luego identificamos las caracteristicas de cada uno de los containers y sumamos a cada contador
     for i in range(len(barcos[button_press].Contenido)):
         if barcos[button_press].Contenido[i].masa == "solida":
             solida += barcos[button_press].Contenido[i].kilos
@@ -424,12 +428,14 @@ def which_button(button_press):
         else:
             estanque += 1
             peso += barcos[button_press].Contenido[i].kilos
+    # Escribimos todo el texto dentro de esa pantalla
     texto = tk.Label(
         frame, text=f"vehiculo numero {[button_press]}\n,Cantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}\n\n{Barco.todo(barcos[button_press])}", wraplength=1100, background='white')
-
     texto.grid(column=0, row=0)
     ventana.update()
     c.config(scrollregion=c.bbox("all"))
+
+# Lo mismo que which_button
 
 
 def which_button2(button_press):
@@ -579,6 +585,7 @@ def which_button4(button_press):
 
 
 def BarcosV():
+    # Creamos otra ventana
     ventana2 = Toplevel(ventana)
     ventana2.title("Barcos")
     ventana2.geometry("500x500")
@@ -586,19 +593,22 @@ def BarcosV():
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     r = 0
     c = 0
-    # img = ImageTk.PhotoImage(file='avion.png')
-    # PhotoImage(master=ventana2, width=10, height=10)
+    # iteramos la lista de los vehiculos y creamos botones
+
     for x in range(len(barcos)):
         r += 1
         btn = Button(
             vp, text=f"{x}", command=lambda m=x: which_button(m))
         btn.grid(column=c, row=r)
+        # Si la cantidad de botones hacia abajo es 28 entonces nos moveremos 1 hacia la derecha para hacer otra columna
         if r == 28:
             c += 1
             r = 0
     if len(barcos) == 0:
         n = Label(ventana2, text="No hay barcos")
         n.grid(column=1, row=2)
+
+# Lo mismo que todos las funciones vehiculoV
 
 
 def trenesV():
@@ -609,8 +619,6 @@ def trenesV():
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     r = 0
     c = 0
-    # img = ImageTk.PhotoImage(file='avion.png')
-    # PhotoImage(master=ventana2, width=10, height=10)
     for x in range(len(trenes)):
         r += 1
         btn = Button(
@@ -632,8 +640,6 @@ def avionesV():
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     r = 0
     c = 0
-    # img = ImageTk.PhotoImage(file='avion.png')
-    # PhotoImage(master=ventana2, width=10, height=10)
     for x in range(len(aviones)):
         r += 1
         btn = Button(
@@ -655,8 +661,6 @@ def CamionesV():
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     r = 0
     c = 0
-
-    # PhotoImage(master=ventana2, width=10, height=10)
     for x in range(len(camiones)):
         r += 1
         btn = Button(
@@ -676,18 +680,15 @@ container()
 transporte()
 total = len(barcos) + len(trenes) + len(aviones) + len(camiones)
 
+# Hacemos una ventana principal
 ventana = Tk()
 ventana.title("Proyecto")
-# ventana.geometry("1250x1250")
-
 vp = Frame(ventana)
-
 vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
 vp.columnconfigure(0, weight=1)
 vp.rowconfigure(0, weight=1)
 
-img = tk.PhotoImage(file="barco.png")
-
+# Escribimos las caracteristicas generales pedidas
 totalvehiculos = Label(vp, text=f"Cantidad total de vehiculos: {total}")
 totalvehiculos.grid(column=1, row=1)
 
@@ -745,7 +746,7 @@ totalvehiculos4 = Label(
     vp, text=f"Precio de los camiones: {len(camiones)*500000 }")
 totalvehiculos4.grid(column=1, row=11)
 
-
+# Creamos botones
 btn = Button(vp, text="Barcos", command=BarcosV)
 btn.grid(column=1, row=12)
 
@@ -756,5 +757,5 @@ btn3.grid(column=1, row=14)
 
 btn4 = Button(vp, text="Camiones", command=CamionesV)
 btn4.grid(column=1, row=15)
-
+# Inicia el loop
 ventana.mainloop()
