@@ -1,0 +1,10 @@
+
+-repo
+https://github.com/der-kaffe/info1123
+
+-commits
+
+https://github.com/der-kaffe/info1123/commits/main
+
+-commits graficas
+https://github.com/der-kaffe/info1123/graphs/commit-activity
