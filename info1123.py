@@ -115,6 +115,7 @@ class Contenedor_G(Contenedores):
         todo = Contenedor_G.tamaño, Contenedor_G.tipo_carga, Contenedor_G.masa, Contenedor_G.kilos
         return
 
+
 @dataclass
 class Estanque_P(Contenedores):
     tamaño: str = "pequeño"
@@ -187,10 +188,6 @@ def container():
             C = Contenedor_G("normal", "solida", float_p)
         container_normal.append(C)
 
-    # print(container_normal)
-    # print(len(container_normal))
-
-
 def gas_liquido():
     peso_estanque = 22000
     # Conseguimos los nombres de todos los tipos de producto diferentes entre si
@@ -224,7 +221,7 @@ def gas_liquido():
         Peso_pequenho = (fp*peso_estanque)/100
         p_int = int(p)
         for e in range(p_int):
-            C = Estanque_G(tipo_de_carga, masa,peso_estanque)
+            C = Estanque_G(tipo_de_carga, masa, peso_estanque)
             a.append(C)
         if Peso_pequenho < 11000:
             for e in range(1):
@@ -234,14 +231,82 @@ def gas_liquido():
             for e in range(1):
                 C = Estanque_G(tipo_de_carga, masa, Peso_pequenho)
             a.append(C)
-    print(estanque_gas)
-    print()
-    print(estanque_liquida)
-    print(len(estanque_gas))
-    print(len(estanque_liquida))
+
+
+# Listas de Vehiculos
+barcos = []
+trenes = []
+aviones = []
+camiones = []
+
+
+def transporte():
+    # Creamos una lista con  todos los containers en orden
+    total = (container_normal) + (estanque_liquida) + (estanque_gas)
+    print(total)
+    prueba = []
+    # Iteramos toda la lista total y lo añadimos a la lista prueba, si resulta que hay un total de X elementos correspondiente
+    # A la cantidad maxima posible de containers que permite el vehiculo creamos un objeto que contenga la lista de containers
+    for i in range(len(total)):
+        prueba.append(total[i])
+        if len(prueba) == 24000:
+            T = Barco(1000000000, prueba)
+            barcos.append(T)
+            # Se vacía la lista para que repetir el ciclo correctamente
+            prueba = []
+            # Lo mismo con Capacidad
+            Barco.Capacidad = 0
+    # Como el if anterior no se cumplió seguramente la lista prueba quedará con items adentro que tienen que ser vaciados
+    prueba = []
+    # La lista TOTAL sigue siendo la misma apesar de que subimos los containers al vehiculo
+    # Si que simplemente los eliminamos
+    if len(barcos) >= 1:
+        for i in range(len(barcos)*24000):
+            total.pop(0)
+    # Repetimos para los demás vehiculos
+    for i in range(len(total)):
+        if Tren.Capacidad < 250:
+            prueba.append(total[i])
+            if len(prueba) == 250:
+                T = Tren(10000000, prueba)
+                trenes.append(T)
+                prueba = []
+                Tren.Capacidad = 0
+    prueba = []
+
+    if len(trenes) >= 1:
+        for i in range(len(trenes)*250):
+            total.pop(0)
+
+    for i in range(len(total)):
+        if Avion.Capacidad < 10:
+            prueba.append(total[i])
+            if len(prueba) == 10:
+                T = Avion(1000000, prueba)
+                aviones.append(T)
+                prueba = []
+                Avion.Capacidad = 0
+    prueba = []
+    if len(aviones) >= 1:
+        for i in range(len(aviones)*10):
+            total.pop(0)
+
+    for i in range(len(total)):
+        if Camion.Capacidad < 10:
+            prueba.append(total[i])
+            if len(prueba) == 1:
+                T = Camion(500000, prueba)
+                camiones.append(T)
+                prueba = []
+                Camion.Capacidad = 0
+
+    if len(camiones) >= 1:
+        for i in range(len(camiones)):
+            total.pop(0)
+
 
 
 leer()
 container()
 gas_liquido()
-# transporte()
+transporte()
