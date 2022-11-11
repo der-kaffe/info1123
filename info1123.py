@@ -150,15 +150,6 @@ def leer():
             }
             cursor.execute(add_product, data_product)
             cnx.commit()
-    # contarq = 'SELECT COUNT(DISTINCT nombre_Producto) FROM progra'
-    # cursor.execute(contarq)
-    # a = cursor.fetchall()
-    # obj = [[] for i in range(int(a[0][0]))]
-    # print(obj)
-
-    # |  # |  # SELECT * FROM progra WHERE masa = 'gas' or masa = 'liquida', me muestra los liquidos y gases que deben ir separados
-    # |  # |  # Quiza cambiar la variable contarq estaria bn
-    # |  # |  # Recuerda que la clave esta en las query y fetchall(), es saber manipular la tabla
 
 
 # Listas que contienen containers
@@ -314,7 +305,7 @@ def transporte(b, t, a, c):
 
 
 def which_button4(button_press, transporte):
-
+    # Definimos variables
     contenedor = 0
     estanque = 0
     peso = 0
@@ -324,6 +315,7 @@ def which_button4(button_press, transporte):
     solida = 0
     liquida = 0
     gas = 0
+    # Creamos ventana con scoll
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', yscrollcommand=Scrollbar.set)
@@ -332,6 +324,7 @@ def which_button4(button_press, transporte):
     frame = tk.Frame(c)
     c.pack(side="left", fill="both", expand=True)
     c.create_window(0, 0, window=frame, anchor='nw')
+    # Dependiendo de donde hacemos click la lista que usaremos  cambiara
     if transporte == "barco":
         vehiculo = aviones
     elif transporte == "tren":
@@ -340,6 +333,7 @@ def which_button4(button_press, transporte):
         vehiculo = aviones
     elif transporte == "camion":
         vehiculo = camiones
+    # Recorremos la lista .Contenido de los objetos y despues lo agregamos al contador
     for i in range(len(vehiculo[button_press].Contenido)):
         if vehiculo[button_press].Contenido[i].masaa == "solida":
             solida += vehiculo[button_press].Contenido[i].kiloss
@@ -362,6 +356,7 @@ def which_button4(button_press, transporte):
         else:
             estanque += 1
             peso += vehiculo[button_press].Contenido[i].kiloss
+    # Lo escribimos en tkinter
     texto = tk.Label(
         frame, text=f"{transporte} numero {[button_press]}\nCantidad de contenedores: {contenedor}\nCantidad de Estanques {estanque}\n\n\tP E S O S   T I P O DE C A R G A\n\nPeso Total: {peso}\nPeso Normal: {Peso_Normal}\nPeso Refrigerado: {Peso_Refrigerada}\nPeso Inflamable: {Peso_Inflamable}\n\n\tP E S O   M A S A\n\nPeso Solido: {solida}\nPeso liquido: {liquida}\n Peso gas: {gas}", wraplength=1100, background='white')
     texto.grid(column=0, row=0)
@@ -370,6 +365,7 @@ def which_button4(button_press, transporte):
 
 
 def barcosV():
+    # Creamos una ventana con scroll con la cantidad de botones respectivos
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', xscrollcommand=Scrollbar.set)
@@ -397,6 +393,7 @@ def barcosV():
 
 
 def trenesV():
+    # Creamos una ventana con scroll con la cantidad de botones respectivos
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', xscrollcommand=Scrollbar.set)
@@ -424,6 +421,7 @@ def trenesV():
 
 
 def avionesV():
+    # Creamos una ventana con scroll con la cantidad de botones respectivos
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', xscrollcommand=Scrollbar.set)
@@ -451,6 +449,7 @@ def avionesV():
 
 
 def camionesV():
+    # Creamos una ventana con scroll con la cantidad de botones respectivos
     ventana = Tk()
     Scrollbar = tk.Scrollbar(ventana)
     c = tk.Canvas(ventana, background='white', xscrollcommand=Scrollbar.set)
@@ -477,6 +476,26 @@ def camionesV():
     c.config(scrollregion=c.bbox("all"))
 
 
+def recalcularBarcos(a, var):
+    # Calculamos en valor multiplicando el precio por la cantidad de objetos en la lista
+    numero = a * int(len(barcos))
+    return var.set(numero)
+
+
+def recalcularTrenes(a, var2):
+    # Calculamos en valor multiplicando el precio por la cantidad de objetos en la lista
+
+    numero = a * int(len(trenes))
+    return var2.set(numero)
+
+
+def recalcularAviones(a, var3):
+    # Calculamos en valor multiplicando el precio por la cantidad de objetos en la lista
+
+    numero = a * int(len(aviones))
+    return var3.set(numero)
+
+
 def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     total = len(barcos) + len(trenes) + len(aviones) + len(camiones)
 
@@ -487,11 +506,14 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     vp.columnconfigure(0, weight=1)
     vp.rowconfigure(0, weight=1)
-
+    var = tk.StringVar()  # --------------------------------------------------------------------------------------------------->>>><<<<<
+    var2 = tk.StringVar()
+    var3 = tk.StringVar()
+    var4 = tk.StringVar()
     # Escribimos las caracteristicas generales pedidas
     totalvehiculos = Label(vp, text=f"Cantidad total de vehiculos: {total}")
     totalvehiculos.grid(column=1, row=1)
-
+    # Imagenes y texto respectivo
     img = tk.PhotoImage(file="barco.png")
     totalvehiculos3 = Label(
         vp, text=f"\t\tCantidad: {len(barcos) }")
@@ -555,6 +577,55 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
 
     btn4 = Button(vp, text="Camiones", command=camionesV)
     btn4.grid(column=1, row=15)
+    #El recalculo de los valores 
+    el = tk.Label(vp, text='Barcos')
+    el.grid(column=1, row=16)
+    entrada = tk.Entry(vp)
+    entrada.grid(column=1, row=17)
+
+    btn = tk.Button(vp, text="recalcular precio de barcos", fg='blue',
+                    command=lambda: recalcularBarcos(int(entrada.get()), var))
+    btn.grid(column=1, row=18)
+
+    res = tk.Label(vp, bg='plum', textvariable=var)
+    res.grid(column=1, row=20)
+
+    ##El recalculo de los valores 
+    el = tk.Label(vp, text='Trenes')
+    el.grid(column=1, row=21)
+    entrada2 = tk.Entry(vp)
+    entrada2.grid(column=1, row=22)
+
+    btn2 = tk.Button(vp, text="recalcular precio de trenes", fg='blue',
+                     command=lambda: recalcularTrenes(int(entrada2.get()), var2))
+
+    btn2.grid(column=1, row=23)
+    res = tk.Label(vp, bg='plum', textvariable=var2)
+    res.grid(column=1, row=24)
+    #El recalculo de los valores 
+    el = tk.Label(vp, text='Aviones')
+    el.grid(column=1, row=25)
+    entrada3 = tk.Entry(vp)
+    entrada3.grid(column=1, row=26)
+
+    btn3 = tk.Button(vp, text="recalcular precio de aviones", fg='blue',
+                     command=lambda: recalcularAviones(int(entrada3.get()), var3))
+
+    btn3.grid(column=1, row=27)
+    res = tk.Label(vp, bg='plum', textvariable=var3)
+    res.grid(column=1, row=28)
+    #El recalculo de los valores 
+    el = tk.Label(vp, text='Camiones')
+    el.grid(column=1, row=29)
+    entrada4 = tk.Entry(vp)
+    entrada4.grid(column=1, row=30)
+
+    btn4 = tk.Button(vp, text="recalcular precio de camiones", fg='blue',
+                     command=lambda: recalcularCamiones(int(entrada4.get()), var4))
+
+    btn4.grid(column=1, row=31)
+    res = tk.Label(vp, bg='plum', textvariable=var4)
+    res.grid(column=1, row=34)
     # Inicia el loop
     ventana.mainloop()
 
@@ -564,8 +635,3 @@ container()
 gas_liquido()
 transporte(b_precio, t_precio, a_precio, c_precio)
 principal_venetana(b_precio, t_precio, a_precio, c_precio)
-
-# def contar():
-#     for i in range(len(aviones)):
-#         print("\n",aviones[i].Contenido[i].kiloss, f"avion {i}\n")
-# contar()
