@@ -20,9 +20,11 @@ except mysql.connector.Error as err:
     elif err.errno == errorcode.ER_BAD_DB_ERROR:
         print("Database does not exist")
     else:
-        print(err)
-
-cursor = cnx.cursor()
+        print("Ups ocurrio un error: ", err)
+try:
+    cursor = cnx.cursor()
+except NameError:  # Este me ocurria cuando moodle estaba caído o por errores DNS
+    print("Probablemente la conexión con el servidor fallo, intentarlo en otro momento o con otra conexión a internet")
 
 # Creamos lo basico del pdf
 pdf = FPDF(orientation='P', unit='mm', format='A4')
@@ -148,12 +150,15 @@ add_product = ("INSERT INTO progra "
 
 
 def leer():
+    print("Puede de que demore un poco en hacer todo el proceso ")
     with open("ej2.csv") as f:
         reader = csv.reader(f, delimiter=",")
         # nos saltamos la primera linea
         next(reader, None)
+        # Eliminamos todo lo que hay en la tabla
         delete = 'delete from progra'
         cursor.execute(delete)
+        # Añadimos lo nuevo a la tabla
         for row in reader:
             data_product = {
                 'id': int(row[0]),
@@ -173,6 +178,7 @@ estanque_gas = []
 
 
 def container():
+    # Las masa normales-solidos van en los containers si que los separamos
     normalq = "select (sum(peso)/1000)/24000 from progra where masa = 'solida'"
     cursor.execute(normalq)
     p = cursor.fetchall()
@@ -395,6 +401,7 @@ def barcosV():
     h = 0
     for x in range(len(barcos)):
         r += 1
+        # Con este boton enviamos el tipo de lista que quermeos reccorrer y el boton presionado
         btn = Button(
             frame, command=lambda m=x: which_button4(m, "barco"), text=f"{x}")
         btn.grid(column=h, row=r)
@@ -491,6 +498,8 @@ def camionesV():
     ventana.update()
     c.config(scrollregion=c.bbox("all"))
 
+# "a" será el valor de los vehiculos y var será lo que aparecera en tkinter
+
 
 def recalcularBarcos(a, var):
     # Calculamos en valor multiplicando el precio por la cantidad de objetos en la lista
@@ -525,6 +534,8 @@ def recalcularCamiones(a, var4):
         w=50, h=5, txt=f"\t\tprecios nuevos camiones: {numero} ", align='C', fill=0, border=1)
     return var4.set(numero)
 
+# Insertamos los precios de los vehiculos
+
 
 def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     total = len(barcos) + len(trenes) + len(aviones) + len(camiones)
@@ -536,7 +547,7 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     vp.grid(column=0, row=0, padx=(50, 30), pady=(10, 10))
     vp.columnconfigure(0, weight=1)
     vp.rowconfigure(0, weight=1)
-    var = tk.StringVar()  # --------------------------------------------------------------------------------------------------->>>><<<<<
+    var = tk.StringVar()
     var2 = tk.StringVar()
     var3 = tk.StringVar()
     var4 = tk.StringVar()
@@ -634,7 +645,7 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     res = tk.Label(vp, bg='plum', textvariable=var)
     res.grid(column=1, row=20)
 
-    # El recalculo de los valores
+    # El recalculo de los valores de los vehiculos
     el = tk.Label(vp, text='Trenes')
     el.grid(column=1, row=21)
     entrada2 = tk.Entry(vp)
@@ -690,6 +701,7 @@ def escribirPDF():
     solida = 0
     liquida = 0
     gas = 0
+    # Se haran 4 bucles con las 4 listas diferentes
     for e in range(4):
         if e == 0:
             vehiculo = aviones
@@ -745,6 +757,7 @@ try:
     transporte(b_precio, t_precio, a_precio, c_precio)
     principal_venetana(b_precio, t_precio, a_precio, c_precio)
     escribirPDF()
+    # Crea el PDF con los datos anteriores
     pdf.output('hoja.pdf')
 except:
     print("Ups, ocurrio un error: ", sys.exc_info()[0])
