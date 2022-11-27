@@ -150,8 +150,7 @@ add_product = ("INSERT INTO progra "
 
 
 def leer():
-    print("Puede de que demore un poco en hacer todo el proceso ")
-    with open("ej2.csv") as f:
+    with open("./ej2.csv") as f:
         reader = csv.reader(f, delimiter=",")
         # nos saltamos la primera linea
         next(reader, None)
@@ -175,6 +174,15 @@ def leer():
 container_normal = []
 estanque_liquida = []
 estanque_gas = []
+# Listas de Vehiculos
+barcos = []
+trenes = []
+aviones = []
+camiones = []
+b_precio = 1000000000
+t_precio = 10000000
+a_precio = 1000000
+c_precio = 500000
 
 
 def container():
@@ -247,17 +255,6 @@ def gas_liquido():
             for e in range(1):
                 C = Estanque_G(tipo_de_carga, masa, Peso_pequenho)
             a.append(C)
-
-
-# Listas de Vehiculos
-barcos = []
-trenes = []
-aviones = []
-camiones = []
-b_precio = 1000000000
-t_precio = 10000000
-a_precio = 1000000
-c_precio = 500000
 
 
 def transporte(b, t, a, c):
@@ -435,7 +432,6 @@ def trenesV():
         if r == 26:
             h += 1
             r = 0
-
     if len(trenes) == 0:
         n = Label(frame, text="No hay Trenes")
         n.grid(column=1, row=2)
