@@ -7,6 +7,8 @@ from PIL import ImageTk
 import mysql.connector
 from mysql.connector import errorcode
 from fpdf import FPDF
+from tkinter import *
+import time
 
 
 try:
@@ -529,69 +531,6 @@ def recalcularCamiones(a, var4):
         w=50, h=5, txt=f"\t\tprecios nuevos camiones: {numero} ", align='C', fill=0, border=1)
     return var4.set(numero)
 
-
-
-
-
-def escribirPDF():
-    contenedor = 0
-    estanque = 0
-    peso = 0
-    Peso_Normal = 0
-    Peso_Refrigerada = 0
-    Peso_Inflamable = 0
-    solida = 0
-    liquida = 0
-    gas = 0
-    # Se haran 4 bucles con las 4 listas diferentes
-    for e in range(4):
-        if e == 0:
-            vehiculo = aviones
-        elif e == 1:
-            vehiculo = trenes
-        elif e == 2:
-            vehiculo = aviones
-        elif e == 3:
-            vehiculo = camiones
-        # Recorremos la lista .Contenido de los objetos y despues lo agregamos al contador
-        for i in range(len(vehiculo)):
-            for y in range(len(vehiculo[i].Contenido)):
-                if vehiculo[i].Contenido[y].masaa == "solida":
-                    solida += vehiculo[i].Contenido[y].kiloss
-                if vehiculo[i].Contenido[y].masaa == "liquida":
-                    liquida += vehiculo[i].Contenido[y].kiloss
-                if vehiculo[i].Contenido[y].masaa == "gas":
-                    gas += vehiculo[i].Contenido[y].kiloss
-                if vehiculo[i].Contenido[y].tipo__carga == "normal":
-                    Peso_Normal += vehiculo[i].Contenido[y].kiloss
-                if vehiculo[i].Contenido[y].tipo__carga == "refrigerado":
-                    Peso_Refrigerada += vehiculo[i].Contenido[y].kiloss
-                if vehiculo[i].Contenido[y].tipo__carga == "inflamable":
-                    Peso_Inflamable += vehiculo[i].Contenido[y].kiloss
-                if type(vehiculo[i].Contenido[y]) == (Contenedor_G):
-                    contenedor += 1
-                    peso += vehiculo[i].Contenido[y].kiloss
-                elif type(vehiculo[i].Contenido[y]) == (Contenedor_P):
-                    contenedor += 1
-                    peso += vehiculo[i].Contenido[y].kiloss
-                else:
-                    estanque += 1
-                    peso += vehiculo[i].Contenido[y].kiloss
-        pdf.multi_cell(
-            w=50, h=5, txt=f"Contenedores: {contenedor}\n Estanques: {estanque}", align='C', fill=0, border=1)
-        pdf.multi_cell(
-            w=50, h=5, txt=f"Peso: {peso}", align='C', fill=0, border=1)
-    pdf.multi_cell(
-        w=50, h=5, txt=f"Peso normal: {Peso_Normal}\n Peso Refrigerado: {Peso_Refrigerada}\n Peso Inflamable: {Peso_Inflamable}", align='C', fill=0, border=1)
-
-    pdf.multi_cell(
-        w=50, h=5, txt=f"Peso solido: {solida}\nPeso liquido: {liquida}\nPeso gas: {gas}", align='C', fill=0, border=1)
-    todo = barcos+trenes+aviones+camiones
-    for i in range(len(todo)):
-        pdf.multi_cell(
-            w=199, h=5, txt=f"{todo[i].Contenido}", align='C', fill=0, border=1)
-
-
 # Insertamos los precios de los vehiculos
 
 
@@ -749,14 +688,71 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     ventana.mainloop()
 
 
-try:
-    leer()
-    container()
-    gas_liquido()
-    transporte(b_precio, t_precio, a_precio, c_precio)
-    principal_venetana(b_precio, t_precio, a_precio, c_precio)
-    escribirPDF()
-    # Crea el PDF con los datos anteriores
-    pdf.output('hoja.pdf')
-except:
-    print("Ups, ocurrio un error: ", sys.exc_info()[0])
+def escribirPDF():
+    contenedor = 0
+    estanque = 0
+    peso = 0
+    Peso_Normal = 0
+    Peso_Refrigerada = 0
+    Peso_Inflamable = 0
+    solida = 0
+    liquida = 0
+    gas = 0
+    # Se haran 4 bucles con las 4 listas diferentes
+    for e in range(4):
+        if e == 0:
+            vehiculo = aviones
+        elif e == 1:
+            vehiculo = trenes
+        elif e == 2:
+            vehiculo = aviones
+        elif e == 3:
+            vehiculo = camiones
+        # Recorremos la lista .Contenido de los objetos y despues lo agregamos al contador
+        for i in range(len(vehiculo)):
+            for y in range(len(vehiculo[i].Contenido)):
+                if vehiculo[i].Contenido[y].masaa == "solida":
+                    solida += vehiculo[i].Contenido[y].kiloss
+                if vehiculo[i].Contenido[y].masaa == "liquida":
+                    liquida += vehiculo[i].Contenido[y].kiloss
+                if vehiculo[i].Contenido[y].masaa == "gas":
+                    gas += vehiculo[i].Contenido[y].kiloss
+                if vehiculo[i].Contenido[y].tipo__carga == "normal":
+                    Peso_Normal += vehiculo[i].Contenido[y].kiloss
+                if vehiculo[i].Contenido[y].tipo__carga == "refrigerado":
+                    Peso_Refrigerada += vehiculo[i].Contenido[y].kiloss
+                if vehiculo[i].Contenido[y].tipo__carga == "inflamable":
+                    Peso_Inflamable += vehiculo[i].Contenido[y].kiloss
+                if type(vehiculo[i].Contenido[y]) == (Contenedor_G):
+                    contenedor += 1
+                    peso += vehiculo[i].Contenido[y].kiloss
+                elif type(vehiculo[i].Contenido[y]) == (Contenedor_P):
+                    contenedor += 1
+                    peso += vehiculo[i].Contenido[y].kiloss
+                else:
+                    estanque += 1
+                    peso += vehiculo[i].Contenido[y].kiloss
+        pdf.multi_cell(
+            w=50, h=5, txt=f"Contenedores: {contenedor}\n Estanques: {estanque}", align='C', fill=0, border=1)
+        pdf.multi_cell(
+            w=50, h=5, txt=f"Peso: {peso}", align='C', fill=0, border=1)
+    pdf.multi_cell(
+        w=50, h=5, txt=f"Peso normal: {Peso_Normal}\n Peso Refrigerado: {Peso_Refrigerada}\n Peso Inflamable: {Peso_Inflamable}", align='C', fill=0, border=1)
+
+    pdf.multi_cell(
+        w=50, h=5, txt=f"Peso solido: {solida}\nPeso liquido: {liquida}\nPeso gas: {gas}", align='C', fill=0, border=1)
+    todo = barcos+trenes+aviones+camiones
+    for i in range(len(todo)):
+        pdf.multi_cell(
+            w=199, h=5, txt=f"{todo[i].Contenido}", align='C', fill=0, border=1)
+
+
+leer()
+container()
+gas_liquido()
+transporte(b_precio, t_precio, a_precio, c_precio)
+principal_venetana(b_precio, t_precio, a_precio, c_precio)
+escribirPDF()
+# Crea el PDF con los datos anteriores
+pdf.output('hoja.pdf')
+print("Ups, ocurrio un error: ", sys.exc_info()[0])

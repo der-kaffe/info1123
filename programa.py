@@ -751,17 +751,12 @@ def escribirPDF():
 inicio = time.time()
 
 leer()
-
+container()
+gas_liquido()
+transporte(b_precio, t_precio, a_precio, c_precio)
+principal_venetana(b_precio, t_precio, a_precio, c_precio)
+escribirPDF()
+pdf.output('hoja.pdf')
 fin = time.time()
-print(fin-inicio) # 1.509922027587890
-
-
-# container()
-# gas_liquido()
-# transporte(b_precio, t_precio, a_precio, c_precio)
-# principal_venetana(b_precio, t_precio, a_precio, c_precio)
-# escribirPDF()
-# Crea el PDF con los datos anteriores
-# pdf.output('hoja.pdf')
 # except:
 #     print("Ups, ocurrio un error: ", sys.exc_info()[0])
