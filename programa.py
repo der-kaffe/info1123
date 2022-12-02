@@ -750,13 +750,16 @@ def escribirPDF():
 # try:
 inicio = time.time()
 
-leer()
-container()
-gas_liquido()
-transporte(b_precio, t_precio, a_precio, c_precio)
-principal_venetana(b_precio, t_precio, a_precio, c_precio)
-escribirPDF()
-pdf.output('hoja.pdf')
-fin = time.time()
+for i in range(24):
+    print(i, " ")
+
+# leer()
+# container()
+# gas_liquido()
+# transporte(b_precio, t_precio, a_precio, c_precio)
+# principal_venetana(b_precio, t_precio, a_precio, c_precio)
+# escribirPDF()
+# pdf.output('hoja.pdf')
+# fin = time.time()
 # except:
 #     print("Ups, ocurrio un error: ", sys.exc_info()[0])

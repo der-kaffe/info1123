@@ -151,7 +151,7 @@ add_product = ("INSERT INTO progra "
 
 
 def leer():
-    with open("./ej2.csv") as f:
+    with open("./MOCK_DATA.csv.csv") as f:
         reader = csv.reader(f, delimiter=",")
         # nos saltamos la primera linea
         next(reader, None)
@@ -196,7 +196,7 @@ def container():
     float_p = peso - int_p
     float_p = (float_p*peso)/100
 
-    for e in range(int_p-1):
+    for e in range(int_p):
         C = Contenedor_G("normal", "solida", 24000)
         container_normal.append(C)
     if float_p < 11000:
