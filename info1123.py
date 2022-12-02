@@ -151,7 +151,7 @@ add_product = ("INSERT INTO progra "
 
 
 def leer():
-    with open("./MOCK_DATA.csv.csv") as f:
+    with open("./MOCK_DATA.csv") as f:
         reader = csv.reader(f, delimiter=",")
         # nos saltamos la primera linea
         next(reader, None)
@@ -219,7 +219,7 @@ def gas_liquido():
     # fetchall regresa una lista de tuplas
     for i in range(len(b)):
         # Recorremos la lista y despues conseguimos todos los valores con el nombre del producto
-        query = f"SELECT * FROM `progra` WHERE nombre_Producto= '{b[i][0]}'"
+        query = f'SELECT * FROM `progra` WHERE nombre_Producto= "{b[i][0]}"'
         cursor.execute(query)
         fetchall = cursor.fetchall()
         for e in range(len(fetchall)):
@@ -282,40 +282,41 @@ def transporte(b, t, a, c):
             total.pop(0)
     # Repetimos para los demás vehiculos
     for i in range(len(total)):
-        if Tren.Capacidad < 250:
-            prueba.append(total[i])
-            if len(prueba) == 250:
-                T = Tren(t, prueba)
-                trenes.append(T)
-                prueba = []
-                Tren.Capacidad = 0
+        prueba.append(total[i])
+        if len(prueba) == 250:
+            T = Tren(t, prueba)
+            trenes.append(T)
+            prueba = []
+            Tren.Capacidad = 0
     prueba = []
+# total 25
+#barcos, trenes = 0
+#aviones = 21
+#camiones = 4
 
     if len(trenes) >= 1:
         for i in range(len(trenes)*250):
             total.pop(0)
 
     for i in range(len(total)):
-        if Avion.Capacidad < 10:
-            prueba.append(total[i])
-            if len(prueba) == 10:
-                T = Avion(a, prueba)
-                aviones.append(T)
-                prueba = []
-                Avion.Capacidad = 0
+        prueba.append(total[i])
+        if len(prueba) == 10:
+            T = Avion(a, prueba)
+            aviones.append(T)
+            prueba = []
+            Avion.Capacidad = 0
     prueba = []
     if len(aviones) >= 1:
         for i in range(len(aviones)*10):
             total.pop(0)
 
     for i in range(len(total)):
-        if Camion.Capacidad < 10:
-            prueba.append(total[i])
-            if len(prueba) == 1:
-                T = Camion(c, prueba)
-                camiones.append(T)
-                prueba = []
-                Camion.Capacidad = 0
+        prueba.append(total[i])
+        if len(prueba) == 1:
+            T = Camion(c, prueba)
+            camiones.append(T)
+            prueba = []
+            Camion.Capacidad = 0
 
     if len(camiones) >= 1:
         for i in range(len(camiones)):
@@ -380,7 +381,7 @@ def which_button4(button_press, transporte):
     texto.grid(column=0, row=0)
     texto = tk.Label(
         frame, text=f"{vehiculo[button_press].Contenido}", wraplength=1100, background='white')
-    texto.grid(column=1, row=1)
+    texto.grid(column=0, row=1)
     ventana.update()
     c.config(scrollregion=c.bbox("all"))
 
@@ -679,25 +680,13 @@ def principal_venetana(b_precio, t_precio, a_precio, c_precio):
     res = tk.Label(vp, bg='plum', textvariable=var4)
     res.grid(column=1, row=34)
 
-    el = tk.Label(
-        vp, text='*La informacion se envia automaticamente a el pdf despues de cerrar el GUI', font=('Arial', 8))
-    el.grid(column=1, row=35)
-
     # Inicia el loop
 
     ventana.mainloop()
 
 
 def escribirPDF():
-    contenedor = 0
-    estanque = 0
-    peso = 0
-    Peso_Normal = 0
-    Peso_Refrigerada = 0
-    Peso_Inflamable = 0
-    solida = 0
-    liquida = 0
-    gas = 0
+    contenedor = estanque = peso = Peso_Normal = Peso_Refrigerada = Peso_Inflamable = solida = liquida = gas = 0
     # Se haran 4 bucles con las 4 listas diferentes
     for e in range(4):
         if e == 0:
@@ -747,12 +736,14 @@ def escribirPDF():
             w=199, h=5, txt=f"{todo[i].Contenido}", align='C', fill=0, border=1)
 
 
-leer()
-container()
-gas_liquido()
-transporte(b_precio, t_precio, a_precio, c_precio)
-principal_venetana(b_precio, t_precio, a_precio, c_precio)
-escribirPDF()
-# Crea el PDF con los datos anteriores
-pdf.output('hoja.pdf')
-print("Ups, ocurrio un error: ", sys.exc_info()[0])
+try:
+    leer()
+    container()
+    gas_liquido()
+    transporte(b_precio, t_precio, a_precio, c_precio)
+    principal_venetana(b_precio, t_precio, a_precio, c_precio)
+    escribirPDF()
+    # Crea el PDF con los datos anteriores
+    pdf.output('hoja.pdf')
+except:
+    print("Ups, ocurrio un error: ", sys.exc_info()[0])
